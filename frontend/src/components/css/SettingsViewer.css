@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap');
+
+#settings-avatar {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: top;
+  justify-content: flex-end;
+  margin-top: 0px;
+  margin-right: 20px;
+  margin-bottom: 15px;
+}
+#settings-subject {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+}
+#settings-email {
+  grid-column: 2 / 3;
+  grid-row: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 250px;
+}

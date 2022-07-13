@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap');
+
+.email-viewer-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+#email-subject {
+  grid-column: 1 / 3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#email-mailbox-name {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  overflow: hidden;
+}
+#email-avatar {
+  grid-column: 1 / 2;
+  grid-row: 2 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#email-from-name {
+  grid-column: 2 / 3;
+  grid-row: 2 / 2;
+  margin-top: 25px;
+  font-weight: 450;
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#email-from-email {
+  grid-column: 2 / 3;
+  grid-row: 3;
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#email-reply {
+  grid-column: 3 / 4;
+  grid-row: 2;
+  margin: auto;
+}
+#email-starred {
+  grid-column: 3 / 4;
+  grid-row: 3;
+  margin: auto;
+}
+#email-content {
+  grid-column: 1 / 4;
+  grid-row: 5;
+  padding-top: 10px;
+  padding-bottom: 50px;
+}

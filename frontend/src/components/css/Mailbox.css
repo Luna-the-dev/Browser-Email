@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap');
+
+.wrapper-read {
+  display: grid;
+  grid-template-columns: 1fr 12fr 1fr;
+}
+.wrapper-read > div{
+  background: #e4e4e4;
+  padding: 0.5em;
+}
+.wrapper-unread {
+  display: grid;
+  grid-template-columns: 1fr 12fr 1fr;
+}
+.wrapper-unread > div{
+  background: white;
+  padding: 0.5em;
+}
+.wrapper-unread > div > div {
+  font-weight: bold;
+}
+#avatar {
+  grid-column: 1 / 2;
+  grid-row: 1 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#name-read {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+#name-unread {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+}
+#subject-read {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+#subject-unread {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+}
+#content-read {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  padding-bottom: 4;
+}
+#content-unread {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  padding-bottom: 4;
+}
+#date {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+#starred {
+  grid-column: 3 / 4;
+  grid-row: 2 / 4;
+  text-align: right;
+}
+#empty-mailbox {
+  padding: 150px;
+  text-align: center;
+  color: gray;
+}

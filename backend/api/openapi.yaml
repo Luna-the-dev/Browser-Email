@@ -1,0 +1,412 @@
+#
+# CSE183 Assignment 9
+#
+
+openapi: '3.0.3'
+
+info:
+  description: CSE183 Assignment 9
+  version: 0.1.0
+  title: CSE183 Assignment 9
+
+servers:
+  - url: http://localhost:3010
+
+paths:
+  /v0/mail:
+    get:
+      description: Returns list of mailbox(es) with emails
+      parameters:
+        - in: query
+          name: mailbox
+          schema:
+            type: string
+          description: The name of the mailbox that the user would like to view
+        - in: query
+          name: from
+          schema:
+            type: string
+            minLength: 2
+          description: The name or email address of the emails that the user would like to view
+      responses:
+        200:
+          description: Email response - return list of mailbox(es)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailboxList'
+        400:
+          description: Invalid mailbox
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Creates a new email in the 'sent' mailbox
+      requestBody:
+        description: Application to put the email in sent mailbox
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SentEmail'
+      responses:
+        201:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mail/{id}:
+    get:
+      description: Returns a single email by id
+      parameters:
+        - name: id
+          in: path
+          description: Id of the email
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Email found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+        404:
+          description: Email not found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: Move an email into a specified mailbox
+      parameters:
+        - name: id
+          in: path
+          description: Id of the email
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: mailbox
+          description: The name of the mailbox that the user would like to move the email to
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Email successfully moved
+        400:
+          description: Id is not a valid uuid
+        404:
+          description: Email not found
+        409:
+          description: Cannot move email to "sent" folder
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mail/starred:
+    get:
+      description: Returns array of starred emails
+      responses:
+        200:
+          description: Starred emails successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailboxContent'
+        400:
+          description: There are no starred emails
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mail/unread:
+    get:
+      description: Returns array of mailbox/# of unread email pairs
+      responses:
+        200:
+          description: Array successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnreadEmailsList'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /v0/mailboxes:
+    get:
+      description: Returns array of mailbox(es)
+      responses:
+        200:
+          description: Mailboxes successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailboxNames'
+        400:
+          description: There are no mailboxes
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mailbox:
+    post:
+      description: Creates a new mailbox
+      parameters:
+        - in: query
+          name: mailbox
+          description: Name of the new Mailbox
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 32
+            example: spam
+      responses:
+        201:
+          description: Mailbox successfully created
+        400:
+          description: Mailbox already exists
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: Deletes a non-static mailbox
+      parameters:
+        - in: query
+          name: mailbox
+          description: Name of the non-static mailbox to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: Mailbox successfully deleted
+        400:
+          description: Mailbox doesn't exist
+        409:
+          description: Mailbox is static
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mail/read/{id}:
+    put:
+      description: set the value of the 'read' property
+      parameters:
+        - name: id
+          in: path
+          description: Id of the email
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: isRead
+          description: Boolean value signifying whether or not the email has been read
+          required: true
+          schema:
+            type: boolean
+      responses:
+        204:
+          description: Read has been successfully set
+        404:
+          description: Email not found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v0/mail/starred/{id}:
+    put:
+      description: set the value of the 'starred' property
+      parameters:
+        - name: id
+          in: path
+          description: Id of the email
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: isStarred
+          description: Boolean value signifying whether or not the email has been starred
+          required: true
+          schema:
+            type: boolean
+      responses:
+        204:
+          description: Starred has been successfully set
+        404:
+          description: Email not found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    MailboxList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Mailbox'
+
+    Mailbox:
+      type: object
+      properties:
+        name:
+          type: string
+        mailbox:
+          type: object
+          items:
+            $ref: '#/components/schemas/MailboxContent'
+
+    MailboxContent:
+      type: array
+      items:
+        $ref: '#/components/schemas/Email'
+
+    Email:
+      additionalProperties: false
+      type: object
+      properties:
+        id:
+          type: string
+        to:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+          required:
+            - name
+            - email
+        from:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            avatar:
+              type: string
+          required:
+            - name
+            - email
+            - avatar
+        subject:
+          type: string
+        sent:
+          type: string
+        received:
+          type: string
+        content:
+          type: string
+        read:
+          type: boolean
+        starred:
+          type: boolean
+      required:
+        - to
+        - from
+        - subject
+        - received
+        - content
+        - read
+        - starred
+
+    SentEmail:
+      additionalProperties: false
+      type: object
+      properties:
+        to:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+          required:
+            - name
+            - email
+        subject:
+          type: string
+        content:
+          type: string
+      required:
+        - to
+        - subject
+        - content
+        - read
+        - starred
+    
+    MailboxNames:
+      type: array
+      items:
+        type: string
+
+    UnreadEmailsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/MailboxUnread'
+
+    MailboxUnread:
+      type: object
+      properties:
+        name:
+          type: string
+        mailbox:
+          type: integer
